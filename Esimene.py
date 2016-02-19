@@ -2,7 +2,7 @@
 f = open('arvud.txt')
 
 # Teises osas üritame saada kõik numbrid eraldi ja liidame kokku
-# Alati algavad array'd nullist siis esimene number on 0
+# Alati algavad array'd nullist siis esimene number on 0(Juhul kui pole teistmoodi määranud)
 # K: Miks on esimene word[0] ja word[1] ning teine algab word[3] mitte word[2]?
 # V: Kuna failis oleva esimese rea väärtus võrdub 45\n , teise rea väärtus 2\n ja kolmanda rea väärtus 63\n 
 # ehk 0=4 , 1=5 , 2=\n , 3=2 4=\n 5=6 , 6=3 ja 7=\n
