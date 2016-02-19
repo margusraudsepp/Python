@@ -15,8 +15,7 @@ while (jrk <= limit):
     if jrk == esimene:
         filename = 'ristsumma'+str(esimene)+'.txt'
         with open (filename, 'a') as f: f.write (str(word[0])+str(word[1]+"\n"))
-        filename = 'ristsumma'+str(esimene)+'.txt'
-    
+        
     if jrk == teine:
         filename = 'ristsumma'+str(teine)+'.txt'
         with open (filename, 'a') as f: f.write (str(word[3])+"\n")
