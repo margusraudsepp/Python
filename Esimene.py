@@ -31,5 +31,6 @@ while (jrk <= limit):
     jrk= jrk + 1
 
 print("Kood sai läbi by: KylaPoiss")
+f.close()
 
 
