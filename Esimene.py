@@ -1,4 +1,4 @@
-# Esimene osa ehk  määrame faili
+# Esimene osa ehk määrame ja avame faili, kust hakkame infot lugema
 f = open('arvud.txt')
 
 # Teises osas üritame saada kõik numbrid eraldi ja liidame kokku
