@@ -11,7 +11,7 @@ for word in f.read().split(" ",1):
     teine = int(word[3])
     kolmas = int(word[5])+int(word[6])
 
-# Kolmas osa: Käime 100 korda ringi, teeme faili ja lisame sisu kui vaja
+# Kolmas osa: Käime 100 korda ringi, teeme faile ja lisame sisu kui vaja
 # Aitab kah, kui oskad koodi saad kõiges aru et pole vaja kommenteerida
 jrk = 1
 limit = 100
