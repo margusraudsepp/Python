@@ -1,7 +1,7 @@
-# Esimene osa ehk määrame ja avame faili, kust hakkame infot lugema
+# Esimene osa: Määrame ja avame faili, kust hakkame infot lugema
 f = open('arvud.txt')
 
-# Teises osas üritame saada kõik numbrid eraldi ja liidame kokku
+# Teises osa: Üritame saada kõik numbrid eraldi ja liidame kokku
 # Alati algavad array'd nullist siis esimene number on 0(Juhul kui pole teistmoodi määranud)
 # K: Miks on esimene word[0] ja word[1] ning teine algab word[3] mitte word[2]?
 # V: Kuna failis oleva esimese rea väärtus võrdub 45\n , teise rea väärtus 2\n ja kolmanda rea väärtus 63\n 
@@ -11,7 +11,7 @@ for word in f.read().split(" ",1):
     teine = int(word[3])
     kolmas = int(word[5])+int(word[6])
 
-# Kolmas osa käime 100 korda ringi, teeme faili ja lisame sisu kui vaja
+# Kolmas osa: Käime 100 korda ringi, teeme faili ja lisame sisu kui vaja
 # Aitab kah, kui oskad koodi saad kõiges aru et pole vaja kommenteerida
 jrk = 1
 limit = 100
