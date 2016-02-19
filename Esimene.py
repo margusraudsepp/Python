@@ -10,7 +10,7 @@ for word in f.read().split(" ",1):
 #Kolmas osa käime 100 korda ringi, teeme faili ja lisame sisu kui vaja
 jrk = 1
 limit = 100
-while (jrk <= limit):
+while jrk <= limit:
     
     if jrk == esimene:
         filename = 'ristsumma'+str(esimene)+'.txt'
