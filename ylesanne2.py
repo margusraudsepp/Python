@@ -9,7 +9,7 @@ jrk = 0
 jrklimit = len(andmed)
 jrktaht = 0
 jrktahtlimit = len(tahed)
-taht = ""
+taht = tahed[jrktaht]
 
 while jrk < jrklimit:
   
