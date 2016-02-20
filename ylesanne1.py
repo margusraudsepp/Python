@@ -1,46 +1,48 @@
-# Esimene osa: Määrame ja avame faili, kust hakkame infot lugema
-f = open('arvud.txt')
+# Impordime decimal sest seda läheb summa arvutamisel vaja.
+import decimal
 
-# Teises osa: Üritame saada kõik numbrid eraldi ja liidame kokku
-# Alati algavad array'd nullist siis esimene number on 0(Juhul kui pole teistmoodi määranud)
-# K: Miks on esimene word[0] ja word[1] ning teine algab word[3] mitte word[2]?
-# V: Kuna failis oleva esimese rea väärtus võrdub 45\n , teise rea väärtus 2\n ja kolmanda rea väärtus 63\n 
-# ehk 0=4 , 1=5 , 2=\n , 3=2 4=\n 5=6 , 6=3 ja 7=\n
-for word in f.read().split(" ",1):
-    esimene = int(word[0])+int(word[1])
-    teine = int(word[3])
-    kolmas = int(word[5])+int(word[6])
-
-# Kolmas osa: Käime 100 korda ringi, teeme faile ja lisame sisu kui vaja
-# Aitab kah, kui oskad koodi saad kõiges aru et pole vaja kommenteerida
-jrk = 1
-limit = 100
-while jrk <= limit:
-    
-    if jrk == esimene:
-        filename = 'ristsumma'+str(esimene)+'.txt'
-        with open (filename, 'a') as f: f.write (str(word[0])+str(word[1]+"\n"))
-        
-    if jrk == teine:
-        filename = 'ristsumma'+str(teine)+'.txt'
-        with open (filename, 'a') as f: f.write (str(word[3])+"\n")
-    
-    if jrk == kolmas:
-        filename = 'ristsumma'+str(kolmas)+'.txt'
-        with open (filename, 'a') as f: f.write (str(word[5])+str(word[6])+"\n")
-    
-    if jrk != esimene or jrk != teine or jrk != kolmas:
-        filename = 'ristsumma'+str(jrk)+'.txt'
-        with open (filename, 'a') as f: f.write ("")
-    
-    jrk= jrk + 1
-
-# Lihsatlt väljastab mingise tulemuse
-print("Kood sai läbi by: Margus Raudsepp")
-
-# Paneme faili ka nüüd kinni
+# Määrame ja avame faili, paneme tulemuse stringi ja sulgeme faili.
+f = open("arvud.txt")
+arvud = f.readlines()
 f.close()
 
-# Hinne oleks ilmselt 3 kuna kood töötab aga pole kõige parem lahendus ehk väga algeline aga TÖÖTAB.
+# Teeme nüüd 100 tühja faili
+jrk = 1         # Mis numbrist algab while, jrk on järjekorranumber.
+jrklimit = 100  # Hetkel limit 10 kuna result liiga pikk poleks.
 
+while jrk <= jrklimit:
+    filename = 'ristsumma'+str(jrk)+'.txt'
+    with open (filename, 'a') as f: f.write ("")
 
+# Et while igavesti ringi ei käiks siis liidame juurde ühe.
+    jrk = jrk + 1
+
+# Sama asi nagu jrk aga teises while's
+arve = 0 
+
+# Loeb stringi arvud, et mitu erinevat tulemust seal on.
+arvelimit = len(arvud) 
+
+# Käime niikaua ringi kui tulemus on olemas
+while arve < arvelimit:
+    
+# Teeme numbrid korda ehk eemaldame \n või muu sõna ehk see käsklus otsib reast kõik numbrid välja.
+# Kui see string(arvud[0]) ei sisaldab numbrit siis jookseb see kokku.
+    ilmaenita = int(''.join(ele for ele in arvud[arve] if ele.isdigit() or ele == '.'))
+
+# Lisab saaduda arvud listi.
+    listenita = list(str(ilmaenita))
+
+# Liidab listis olevad arvud.
+# NB! Kui listis on asi mis pole arv siis jookseb see kokku.
+    failinumber = int(sum(decimal.Decimal(x) for x in listenita))
+
+# Lisame faili infot.
+    filename = 'ristsumma'+str(failinumber)+'.txt'
+    with open (filename, 'a') as f: f.write (arvud[arve])
+
+# Et while igavesti ringi ei käiks siis liidame juurde ühe.
+    arve = arve + 1;
+
+# Siin lihtsalt väljastame mingi lause.
+print("Tehti " + str(jrk-1) + " faili ja lisati " + str(arvelimit) + " tulemust.")
