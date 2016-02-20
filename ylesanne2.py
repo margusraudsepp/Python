@@ -1,5 +1,5 @@
 # Seda koodi ma ei viitsinud kommenteerida
-andmed = [{'a':3, 'b':47, 'c':6},{'c':21, 'd':3},{'b':7, 'd':3,'x':12},{'t':23,'a':2}]
+andmed = [{'a':3, 'b':47, 'c':6},{'c':21, 'd':3},{'b':7, 'd':3,'x':12},{'y':23,'a':2}]
 #tahed = ['a','b','c','d','x','y'] # Tähestiku järgi
 tahed = ['b','c','a','d','x','y'] # Siia tuleks teha, et saab need tähed ise kätte stringis andmed
 
