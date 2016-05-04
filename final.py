@@ -1,13 +1,20 @@
 ### ------------------------------------------- ### SISUKORD ### ------------------------------------------- ###
 ### LINE ~1      SISUKORD
-### lINE ~5      IMPORT
-### lINE ~9      FROM
-### lINE ~14     GAME CONFIG
-### lINE ~21     FIRST RUN
-### lINE ~25     GAME VASTAMINE
-### lINE ~40     GAME
-### lINE ~91     RAAM
-### lINE ~108    TOP
+### LINE ~13     UPDATES
+### lINE ~19     IMPORT
+### lINE ~22     FROM
+### lINE ~26     GAME CONFIG
+### lINE ~32     FIRST RUN
+### lINE ~35     GAME VASTAMINE
+### lINE ~49     GAME
+### lINE ~99     RAAM
+### lINE ~1115    TOP
+
+### ------------------------------------------- ### UPDATE'S ### ------------------------------------------- ###
+### 1. TOP 10 parimat tulemust suuremast väikemani.
+### 2. Lisab Tulemuse TOP'i
+### 3. Nime lisamine
+### 4. Skoor
 
 ### -------------------------------------------- ### IMPORT ### -------------------------------------------- ###
 import random
@@ -163,6 +170,7 @@ with open("top.txt") as top:
         
 
             jooksevY = jooksevY +20
+
 
 
 
