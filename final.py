@@ -3,196 +3,279 @@
 ### LINE ~13     UPDATES
 ### lINE ~20     IMPORT
 ### lINE ~24     FROM
-### lINE ~29     GAME CONFIG
-### lINE ~36     RAAM
-### lINE ~38     FIRST RUN
-### lINE ~54     RESULTS
-### lINE ~59     GAME VASTAMINE
-### lINE ~74     GAME
-### lINE ~139   + TOP
+### lINE ~30     FIRST RUN
+### lINE ~57     RAAM
+### lINE ~74     BEFORE GAME
+### lINE ~108    GAME VASTAMINE
+### lINE ~118    GAME
+### lINE ~187    RESULT
+### lINE ~222    TOP
 
 ### ------------------------------------------- ### UPDATE'S ### ------------------------------------------- ###
-### 1. TOP 10 parimat tulemust suuremast väikemani
-### 2. Lisab Tulemuse TOP'i
-### 3. Nime lisamine
-### 4. Õigeid ja valesi vastuseid
+### 1. Mängu lõpetamine kui 10 küsimust täis ning suunab tagasi algusesse
+### 2. 
+### 3. 
+### 4. 
 
 ### -------------------------------------------- ### IMPORT ### -------------------------------------------- ###
 import random
-
+import easygui
 
 ### --------------------------------------------- ### FROM ### --------------------------------------------- ###
 from tkinter import *
 from tkinter import ttk
 from functools import partial
-
-### ------------------------------------------ ### GAME CONFIG ### ----------------------------------------- ###
-'''
-skoor = 0
-oiged = 0
-valesid = 0
-'''
+from operator import itemgetter, attrgetter #TOP'is aksutab seda
 
 ### ------------------------------------------- ### FIRST RUN ### ------------------------------------------ ###
+# Checkime kas on olemas top,kysi ja vastus TXT
+# Kysimused
+try:
+    with open('kysi.txt') as file:
+        print("")    
+except IOError as e:
+        with open ("kysi.txt", 'a') as f:
+            f.write ("Kysi1\nKysi2\nKysi3\nKysi4\nKysi5\nKysi6\nKysi7\nKysi8\nKysi9\nKysi10\nKysi11\nKysi12")
+# Vastused
+try:
+    with open('vastus.txt') as file:
+        print("")    
+except IOError as e:
+        with open ("avastus.txt", 'a') as f:
+            f.write ("Vastus1 Vastus Vastus3 Vastus4 Vastus\nVastus1 Vastus2 Vastus Vastus4 Vastus\nVastus1 Vastus2 Vastus Vastus4 Vastus\nVastus1 Vastus2 Vastus3 Vastus Vastus\nVastus Vastus2 Vastus3 Vastus4 Vastus\nVastus1 Vastus2 Vastus3 Vastus Vastus\nVastus1 Vastus Vastus3 Vastus4 Vastus\nVastus1 Vastus2 Vastus Vastus4 Vastus\nVastus1 Vastus2 Vastus Vastus4 Vastus\nVastus1 Vastus2 Vastus3 Vastus Vastus\nVastus Vastus2 Vastus3 Vastus4 Vastus\nVastus1 Vastus2 Vastus3 Vastus Vastus")
+
+# TOP
+try:
+    with open('top.txt') as file:
+        print("")    
+except IOError as e:
+        with open ("top.txt", 'a') as f:
+                     f.write ("Kala 12\nPehnmo 2\nEminem 12\nD12 3\nSnoop 7\nMianmi 2\nKusti 5\nTola 2\nSepo 3\nSavikas 7\nKakaka 10\nPaks 5\nNotsu 6\nKrooks 6\nLy 8\nMurka 4\nMadis 5\nHiie 9")
 
 ### --------------------------------------------- ### RAAM ### --------------------------------------------- ###
 
 gameraam = Tk()
-gameraam.title("Viktoriin - ")
-gameraam.geometry("500x300")
-#gameraam.eval('Ttk::PlaceWindow %s center' % gameraam.winfo_pathname(gameraam.winfo_id()))
+gameraam.title("Viktoriin ")
+gameraam.geometry("700x400")
 
-silt = ttk.Label(gameraam, text="Nimi:")
-silt.place(x=30, y=5)
- 
-nimi = ttk.Entry(gameraam)
-nimi.place(x=70, y=5, width=150)
- 
-nupp = ttk.Button(gameraam, text="Alusta", command=lambda: startgame(0,0,8))
-nupp.place(x=70, y=30, width=150)
+#def raam():
+alustaLabel = ttk.Label(gameraam, text="Nimi:",font=('Helvetica', 16))
+alustaLabel.place(x=55, y=10) 
+#alustaKysiLabel = ttk.Label(gameraam, text="Kysimusi:",font=('Helvetica', 16))
+#alustaKysiLabel.place(x=10, y=40)
 
-### -------------------------------------------- ### RESULTS ### ------------------------------------------- ###
-def results():
-    print("ENDEX")
-    nuppa.destroy()
+alustaName = ttk.Entry(gameraam, text="Kolja", font=('Helvetica', 16))
+alustaName.place(x=110, y=10, width=150)
+#alustaKysiName = ttk.Entry(gameraam, text="10", font=('Helvetica', 16))
+#alustaKysiName.place(x=110, y=40, width=150)
+ 
+alustaButton = ttk.Button(gameraam, text="Alusta", command=lambda: beforegame())
+alustaButton.place(x=110, y=70, width=150, height=30)
+
+### ------------------------------------------ ### BEFORE GAME ### ----------------------------------------- ###
+def beforegame():
+
+    name = alustaName.get()
+    #kysimusi = alustaKysiName.get()
+    kysimusi = 10
     
-### ---------------------------------------- ### GAME VASTAMINE ### ---------------------------------------- ###
+    # Kontrollime, et nime topis poleks
+    namestop = []
+    with open("top.txt") as top:
+        for topx, topdataname in enumerate(top):
+            GetName = topdataname.split()
+            namestop.append(GetName[0])
+        
+    # Palju kysimusi on
+    totalkysimus = sum(1 for line in open('kysi.txt'))      
+    
+    if (kysimusi == ""):
+        easygui.msgbox("Palun sisestage küsimuse number ", title="Viktoriin - Veateade")
+    elif namestop.count(name) == 1:
+        easygui.msgbox("Nimi " + name + " on juba kasutuses ", title="Viktoriin - Veateade")
+    elif (int(kysimusi) <= 0):
+        easygui.msgbox("Küsimusi number peab olemas suurem kui 0 ", title="Viktoriin - Veateade")
+    elif (int(kysimusi) > int(totalkysimus)):
+        easygui.msgbox("Küsimusi number ei sa suurem olla, kui " + str(totalkysimus), title="Viktoriin - Veateade")
+    elif (name.isalpha() == False):
+        easygui.msgbox("Nimi peab olema ÜKS sõna mis ei sisalda numbreid, tühkuid ega erilisi sümboleid", title="Viktoriin - Veateade")
+    elif (len(name) > 10):
+        easygui.msgbox("Nimi ei tohi olla pikem kui 10 tähte ", title="Viktoriin - Veateade")
+    else:
+        gameraam.title("Viktoriin - " + name)
+        startgame(0,0,0)
 
+### ---------------------------------------- ### GAME VASTAMINE ### ---------------------------------------- ###
 def vastab(vastatav,vastus,oiged,valesid,mitmeskysimus):
     
     if vastatav == vastus:
-        #print("oige")
         oiged = oiged + 1
     else:
-        #print("vale")
         valesid = valesid + 1
 
-    #mitmeskysimus = mitmeskysimus + 1 # Liidame siin juba juurde
+    gameraam.gamesiltkysimus.place_forget() 
     startgame(oiged,valesid,mitmeskysimus)
-
     
 ### --------------------------------------------- ### GAME ### --------------------------------------------- ###
 
 def startgame(oiged,valesid,mitmeskysimus):
 
-    maxkysimusi = 10 # Palju kysimusi esitab
-   
-    mitmeskysimus = mitmeskysimus + 1
+    used = []
 
-    kysi = ttk.Label(gameraam, text="Küsimus "+str(mitmeskysimus)+"/"+str(maxkysimusi),font=('Helvetica', 20))
-    kysi.place(x=10, y=60)
+    # Varjame selle ära
+    alustaLabel.place_forget()
+    alustaName.place_forget()
+    #alustaKysiLabel.place_forget()
+    #alustaKysiName.place_forget()
+    alustaButton.place_forget()
+    #newgamebu.place_forget()
+
+    maxkysimusi = 10 # Palju kysimusi esitab
+    #maxkysimusi = alustaKysiName.get()
+
+    totalkysimus = sum(1 for line in open('kysi.txt'))
+   
+    mitmeskysimus = mitmeskysimus + 1  
+    
+    gamekysi = ttk.Label(gameraam, text="Küsimus "+str(mitmeskysimus)+"/"+str(maxkysimusi),font=('Helvetica', 20))
+    gamekysi.place(x=10, y=10)
         
-    kysimusid = random.randrange(1, maxkysimusi) # Default 1 - 10(maxkysimusi)
+    kysimusid = random.randrange(0, totalkysimus ) # Default 1 - 10(maxkysimusi)
     
     def gennewkysimusid(): #Generate New Kysimus ID(line)
-        kysimusid = random.randrange(1, maxkysimusi)
+        kysimusid = random.randrange(0, totalkysimus )
 
     # Vahel toimib, vahel mitte, üritab skipida küsimuse mis juba oli :D
-    used = [1,3,6]
     if used.count(kysimusid) == 1:
         gennewkysimusid()
         #print("ReRoll "+str(kysimusid))
-                       
+
+    used.append(int(kysimusid))
+    #print(used)
+
+    
     with open("kysi.txt") as fp:
         for i, line in enumerate(fp):         
             if i == kysimusid:                
                 break
+    # Splitime siin küsimust          
+    Jupitame = line.split("\\n")
+    JupitameKysi = ""
+    JupitameNR = 0
+    try:
+        while (Jupitame[JupitameNR]):
+            JupitameKysi = JupitameKysi + "\n" + Jupitame[JupitameNR]
+            JupitameNR = JupitameNR +1
+    except:
+        print("")
     
-    
-    gamesilt = ttk.Label(gameraam, text="Küsimus:")
-    gamesilt.place(x=10, y=100)
-        
-    gamesilkysimus = ttk.Label(gameraam, text=line)
-    gamesilkysimus.place(x=60, y=100)
-
+    gameraam.gamesiltkysimus = ttk.Label(gameraam, text=JupitameKysi,font=('Helvetica', 16),width=25)
+    gameraam.gamesiltkysimus.place(x=10, y=50)
 
     with open("vastus.txt") as fpv:
         for x, linev in enumerate(fpv):
             if x == kysimusid:
                 break
     
-
     kysivastused = linev.split()
 
-    nuppa = ttk.Button(gameraam, text=kysivastused[0], command=lambda: vastab(kysivastused[0],kysivastused[4],oiged,valesid,mitmeskysimus))
-    nuppa.place(x=10, y=120, width=150)
+    gameraam.nuppa = ttk.Button(gameraam, text=kysivastused[0], command=lambda: vastab(kysivastused[0],kysivastused[4],oiged,valesid,mitmeskysimus))
+    gameraam.nuppa.place(x=10, y=247.5, width=150, height=40)
+       
+    gameraam.nuppb = ttk.Button(gameraam, text=kysivastused[1], command=lambda: vastab(kysivastused[1],kysivastused[4],oiged,valesid,mitmeskysimus))
+    gameraam.nuppb.place(x=160, y=247.5, width=150, height=40)
+
+    gameraam.nuppc = ttk.Button(gameraam, text=kysivastused[2], command=lambda: vastab(kysivastused[2],kysivastused[4],oiged,valesid,mitmeskysimus))
+    gameraam.nuppc.place(x=10, y=287.5, width=150, height=40)
+
+    gameraam.nuppd = ttk.Button(gameraam, text=kysivastused[3], command=lambda: vastab(kysivastused[3],kysivastused[4],oiged,valesid,mitmeskysimus))
+    gameraam.nuppd.place(x=160, y=287.5, width=150, height=40)
+
+    if (mitmeskysimus > maxkysimusi):
+        gameraam.newgame = ttk.Button(gameraam, text="Mäng läbi")
+        gameraam.newgame.place(x=10, y=10, width=300,height=180)
+        result(oiged,valesid)
+
+### -------------------------------------------- ### RESULT ### -------------------------------------------- ###
+def result(oiged,valesid):
+
+    WhatName = alustaName.get()
+    CalcScore = oiged - valesid
+
+    # Lisame tulemuse topi
+    with open ("top.txt", 'a') as f: f.write ("\n" + WhatName + " " + str(CalcScore))
+
+    tulemus = ttk.Label(gameraam, text="Teie tulemus on " + str(CalcScore),font=('Helvetica', 16))
+    tulemus.place(x=75, y=250)
+
+    CheckSpot = []
+    with open("top.txt") as place:
+        for spotx, NamesDataPlace in enumerate(place):
+            PlaceData = NamesDataPlace.split()
+            CheckSpot.append([PlaceData[0], int(PlaceData[1])])
     
-    nuppb = ttk.Button(gameraam, text=kysivastused[1], command=lambda: vastab(kysivastused[1],kysivastused[4],oiged,valesid,mitmeskysimus))
-    nuppb.place(x=160, y=120, width=150)
+    PlacList = sorted(CheckSpot, key=itemgetter(1), reverse=True) #itemgetter(0) nime järgi
 
-    nuppc = ttk.Button(gameraam, text=kysivastused[2], command=lambda: vastab(kysivastused[2],kysivastused[4],oiged,valesid,mitmeskysimus))
-    nuppc.place(x=10, y=150, width=150)
+    # Koha saamine
+    KohtiTopis = sum(1 for line in open('top.txt'))
+    WhatPlace = 0
 
-    nuppd = ttk.Button(gameraam, text=kysivastused[3], command=lambda: vastab(kysivastused[3],kysivastused[4],oiged,valesid,mitmeskysimus))
-    nuppd.place(x=160, y=150, width=150)
+    while (WhatPlace <= KohtiTopis):
+        #print(PlacList[WhatPlace][0])
+        if (WhatName == PlacList[WhatPlace][0]):
+            koht = ttk.Label(gameraam, text="Teie koht on " + str(WhatPlace+1),font=('Helvetica', 16))
+            koht.place(x=75, y=280)
+            break        
+        WhatPlace = WhatPlace + 1
 
-    def results():
-        print("ENDEX")
-        nuppa.destroy()
+    maketop() #Kuna see mingi skoor võib tulla TOP10 sisse siis reloadime nagu topi
 
-    if (mitmeskysimus >= maxkysimusi):
-        gameraam.nuppa.pack_forget()
-        results()
-
+    
 ### ---------------------------------------------- ### TOP ### --------------------------------------------- ###
+# OSA 1 #Esialgne kujundus
 
-top10 = ttk.Label(gameraam, text="TOP 10")
-top10.place(x=350, y=5)
+def maketop():
 
-topjrk = ttk.Label(gameraam, text="NR")
-topjrk.place(x=350, y=20)
+    top10 = ttk.Label(gameraam, text="TOP 10",font=('Helvetica', 20))
+    top10.place(x=350, y=10)
 
-topname = ttk.Label(gameraam, text="Nimi")
-topname.place(x=370, y=20)
+    topjrk = ttk.Label(gameraam, text="NR",font=('Helvetica', 16))
+    topjrk.place(x=350, y=50)
 
-topscore = ttk.Label(gameraam, text="Skoor")
-topscore.place(x=420, y=20)
+    topname = ttk.Label(gameraam, text="Nimi",font=('Helvetica', 16))
+    topname.place(x=380, y=50)
 
-jooksevY = 40
+    topscore = ttk.Label(gameraam, text="Skoor",font=('Helvetica', 16))
+    topscore.place(x=480, y=50)
 
+    #OSA 2 #Sebime andmed array'sse
+    topdata = []
 
-#l = [6, 0, 2, 3, 1, 5, 4]
-#print(sorted(l, reverse=True))
-
-topnames = ""
-topscores= ""
-
-top10limit = 10
-
-'''
-from operator import itemgetter, attrgetter
-data = [('kysivastused', 1123), ('blue', 321), ('red', 12), ('Emi', 222)]
-juhan = sorted(data, key=itemgetter(1))
-print (juhan)
-print(juhan[0][0])
-print(juhan[0][1])
-'''
-
-with open("top.txt") as top:
-    for topx, topdataname in enumerate(top):
-
-        
-        if top10limit > topx:
+    with open("top.txt") as top:
+        for topx, topdataname in enumerate(top):
             nameANDscore = topdataname.split()
-            topnames = topnames + nameANDscore[0]
-            topscores= topscores + nameANDscore[1]
+            topdata.append([nameANDscore[0], int(nameANDscore[1])]) 
+
+
+    ## OSA 3 #Printime tulemuse suuremast väiksemani, limit 10
+    toplimit = 10
+    count = 0
+    jooksevY = 75
+
+    topdatadesc = sorted(topdata, key=itemgetter(1), reverse=True) #itemgetter(0) nime järgi
+
+    while (count < toplimit):
+
+        topjrk = ttk.Label(gameraam, text=count+1,font=('Helvetica', 16))
+        topjrk.place(x=350, y=jooksevY)
         
+        topname = ttk.Label(gameraam, text=topdatadesc[count][0],font=('Helvetica', 16))
+        topname.place(x=380, y=jooksevY)
 
-        #topnames = topnames + nameANDscore[topx]
-        #topscores= topnames + nameANDscore[topx+1]
+        topscore = ttk.Label(gameraam, text=topdatadesc[count][1],font=('Helvetica', 16))
+        topscore.place(x=480, y=jooksevY)
         
-            topjrk = ttk.Label(gameraam, text=topx+1)
-            topjrk.place(x=350, y=jooksevY)
-            
-            topname = ttk.Label(gameraam, text=nameANDscore[0])
-            topname.place(x=370, y=jooksevY)
-            
-            topscore = ttk.Label(gameraam, text=nameANDscore[1])
-            topscore.place(x=420, y=jooksevY)
-        
+        count = count + 1
+        jooksevY = jooksevY + 25
 
-            jooksevY = jooksevY +20
-
-
-
-
+maketop() # Prindime topi välja
